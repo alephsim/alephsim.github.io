@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aleph Sim</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d1b2a;
+      --ink: #ecf0f1;
+      --muted: #8fa3b0;
+      --accent: #0ecb81;
+      --border: #1f3a52;
+      --card: #162233;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      background: rgba(13,27,42,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 4rem 4rem;
+      max-width: 900px;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.25s;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.45s;
+    }
+
+    .hero-cta {
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.6s;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.8rem;
+      background: var(--ink);
+      color: var(--bg);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn:hover { background: var(--accent); }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      color: var(--muted);
+      max-width: 600px;
+      margin-bottom: 1rem;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      margin-top: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .skill-item {
+      background: var(--card);
+      padding: 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .skill-item:hover { background: var(--bg); }
+
+    .skill-category {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-list {
+      list-style: none;
+      color: var(--ink);
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-list {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .project-item {
+      background: var(--card);
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      transition: background 0.2s;
+      cursor: default;
+    }
+
+    .project-item:hover { background: var(--bg); }
+
+    .project-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 500px;
+      margin: 0;
+    }
+
+    .project-tag {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      white-space: nowrap;
+    }
+
+    /* ── BIO WITH IMAGE ── */
+    .bio-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .bio-text {
+      max-width: 500px;
+    }
+
+    .bio-text p {
+      margin-bottom: 1rem;
+    }
+
+    .bio-image {
+      width: 100%;
+      max-width: 350px;
+      border: 1px solid rgba(31, 58, 82, 0.4);
+      border-radius: 4px;
+      aspect-ratio: 1;
+      object-fit: cover;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      filter: saturate(0.75);
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .contact-item {
+      background: var(--card);
+      padding: 1.5rem 2rem;
+      transition: background 0.2s;
+    }
+
+    .contact-item:hover { background: var(--bg); }
+
+    .contact-label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-value {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    a.contact-value:hover { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .bio-container { grid-template-columns: 1fr; gap: 1.5rem; }
+      .bio-image { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="#hero">AS</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#owner">About the Owner</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div id="hero">
+    <p class="hero-label">Freelance Consultancy · AI & Applied Mathematics</p>
+    <h1>Aleph Sim</h1>
+    <p class="hero-sub">
+      We design and build intelligent systems for engineering and scientific research.
+      Combining machine learning, numerical methods, and domain expertise to solve complex challenges.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn">Get in touch</a>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">01 — About Aleph Sim</p>
+    <h2>Intelligent Systems for Engineering</h2>
+    <p>
+      Aleph Sim is a specialized consultancy focused on developing AI solutions for engineering and scientific research.
+      We tackle complex problems at the intersection of machine learning, numerical simulation, and domain-specific engineering challenges.
+    </p>
+    <p>
+      Our approach combines cutting-edge AI techniques with rigorous mathematical methods to create intelligent systems that analyze, optimize, and enhance engineering workflows.
+    </p>
+  </section>
+
+  <!-- ABOUT THE OWNER -->
+  <section id="owner">
+    <p class="section-label">10 — ... and little about me :)</p>
+    <h2>The founder's story</h2>
+    <div class="bio-container">
+      <div class="bio-text">
+        <p>
+          I graduated from the University of Zagreb with a degree in Electrical Engineering (BSc), learning from the best in the field. After that, I decided to pursue a degree in Data Science as an Erasmus student at KU Leuven, Belgium. Fascinated by both paths, I couldn't decide between them. But, fortunately, I didn't have to...
+        </p>
+        <p>
+          A great "deus-ex-machina" moment occured when I applied and got accepted for an internship position at Infineon Technologies AG. I had an opportunity to develop machine learning approaches in the field of semiconductors. At that point on, I was set on a path that combined my engineering background with data science and AI.
+        </p>
+        <p>
+          I do not think of myself as a pure data scientist, nor as a pure engineer. I am a bit of both, and I enjoy working on projects that require a combination of skills.
+        </p>
+      </div>
+      <img src="slika.png" alt="Your name" class="bio-image">
+    </div>
+  </section>
+
+  <!-- EXPERIENCE  -->
+  <section id="experience">
+    <p class="section-label">11 — Company Work</p>
+    <h2>Client Projects</h2>
+    <div class="projects-list">
+      <div class="project-item">
+        <div>
+          <p class="project-name">AVL List GmbH · AI Development</p>
+          <p class="project-desc">Developing machine learning models and quality validation systems for AVL Vehicle Composer, an AI-enhanced vehicle concept development platform. Lending expertise in generating intelligent models and ensuring traceability in complex engineering workflows.</p>
+        </div>
+        <span class="project-tag">Currently ongoing</span>
+      </div>
+      <!-- <div class="project-item">
+        <div>
+          <p class="project-name">Electromagnetic Simulation Automation</p>
+          <p class="project-desc">Developed automated workflow solutions for electromagnetic simulation and modeling. Leveraging LLM agents to streamline complex engineering processes in semiconductor packaging.</p>
+        </div>
+        <span class="project-tag">Completed</span>
+      </div> -->
+      <div class="project-item">
+        <div>
+          <p class="project-name" style="color: var(--ink);">This could be your next successful story :)</p>
+          <p class="project-desc" style="color: var(--ink);">Let's work together to solve your complex problems.</p>
+        </div>
+        <span class="project-tag" style="color: var(--ink);">Coming soon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label">100 — Our Expertise</p>
+    <h2>What we specialize in</h2>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <p class="skill-category">AI & Machine Learning</p>
+        <ul class="skill-list">
+          <li>Deep Learning</li>
+          <li>ML Optimization</li>
+          <li>PyTorch, Tensorflow</li>
+        </ul>
+      </div>
+      <div class="skill-item">
+        <p class="skill-category">Engineering Simulation</p>
+        <ul class="skill-list">
+          <li>Physics Simulation</li>
+          <li>Numerical Methods</li>
+          <li>Numpy, Matlab / Simulink</li>
+        </ul>
+      </div>
+      <div class="skill-item">
+        <p class="skill-category">Software Engineering</p>
+        <ul class="skill-list">
+          <li>Python, SQL</li>
+          <li>LLM integration</li>
+          <li>Cloud (AWS)</li>
+        </ul>
+      </div>
+      <div class="skill-item">
+        <p class="skill-category">Data & Analysis</p>
+        <ul class="skill-list">
+          <li>Data Processing</li>
+          <li>Visualization</li>
+          <li>Statistical Analysis</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS
+  <section id="projects">
+    <p class="section-label">04 — Projects</p>
+    <h2>Selected Work.</h2>
+    <div class="projects-list">
+      <div class="project-item">
+        <div>
+          <p class="project-name">Project Name</p>
+          <p class="project-desc">Description of the project, the problem solved, the approach taken, and the outcomes. Include technologies and impact.</p>
+        </div>
+        <span class="project-tag">AI · Python</span>
+      </div>
+      <div class="project-item">
+        <div>
+          <p class="project-name">Project Name</p>
+          <p class="project-desc">Description of the project, the problem solved, the approach taken, and the outcomes. Include technologies and impact.</p>
+        </div>
+        <span class="project-tag">Simulation · C++</span>
+      </div>
+      <div class="project-item">
+        <div>
+          <p class="project-name">Project Name</p>
+          <p class="project-desc">Description of the project, the problem solved, the approach taken, and the outcomes. Include technologies and impact.</p>
+        </div>
+        <span class="project-tag">ML · Research</span>
+      </div>
+    </div>
+  </section> -->
+
+  <!-- PUBLICATIONS -->
+  <section id="publications">
+    <p class="section-label">101 — Research & Publications</p>
+    <h2>Advancing the Field</h2>
+    <div class="projects-list">
+      <div class="project-item">
+        <div>
+          <p class="project-name">Autonomous Electromagnetic Simulation and Modeling of QFN Micro-Electronic Packages Using LLM Agents</p>
+          <p class="project-desc">Published in IEEE Access (DOI: <a href="https://ieeexplore.ieee.org/document/11150377">10.1109/ACCESS.2025.3605803</a>).
+            Novel methodology for automating electromagnetic simulation workflows using Large Language Model agents, applied to semiconductor packaging design. Code available on <a href="https://github.com/Hrcii/LLeM" target="_blank">GitHub</a>.
+          </p>
+        </div>
+        <span class="project-tag">2025</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">110 — Get in Touch</p>
+    <h2>Start Your Project</h2>
+    <p>Have a challenge that requires AI and engineering expertise? We'd love to discuss how we can help.</p>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <p class="contact-label">Email</p>
+        <a href="mailto:hrvoje1molnar@gmail.com" class="contact-value">hrvoje.alephsim@gmail.com</a>
+      </div>
+      <!-- <div class="contact-item">
+        <p class="contact-label">LinkedIn</p>s
+        <a href="https://hr.linkedin.com/in/hrvoje-molnar-217383273" class="contact-value" target="_blank">Profile</a>
+      </div> -->
+      <div class="contact-item">
+        <p class="contact-label">Personal GitHub</p>
+        <a href="https://github.com/Hrcii" class="contact-value" target="_blank">github.com/Hrcii</a>
+      </div>
+      <div class="contact-item">
+        <p class="contact-label">Location</p>
+        <span class="contact-value">Zagreb, Croatia</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Aleph Sim</span>
+    <span>AI &amp; Applied Mathematics for Engineering</span>
+  </footer>
+
+</body>
+</html>
