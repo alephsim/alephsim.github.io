@@ -1342,11 +1342,11 @@
   const tweaksEl = document.getElementById('tweaks');
   const tweaksToggle = document.getElementById('tweaksToggle');
   const tweaksHeader = document.getElementById('tweaksHeader');
-  tweaksToggle.addEventListener('click', () => {
+  if (tweaksToggle) tweaksToggle.addEventListener('click', () => {
     tweaksEl.classList.add('on');
     tweaksToggle.style.display = 'none';
   });
-  tweaksHeader.addEventListener('click', () => {
+  if (tweaksHeader) tweaksHeader.addEventListener('click', () => {
     tweaksEl.classList.remove('on');
     tweaksToggle.style.display = '';
   });
