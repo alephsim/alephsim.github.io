@@ -9,16 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Fragment+Mono&family=Space+Grotesk:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 
-<script>
-  const TWEAK_DEFAULTS = {
-    "hero": "graph",
-    "theme": "ink",
-    "accent": 228,
-    "density": "compact",
-    "serif": "young",
-    "sectionNumbering": "binary"
-  };
-</script>
 
 <style>
   :root {
@@ -629,87 +619,6 @@
   .hero .reveal { opacity: 0; transform: translateY(16px); }
   .hero .reveal.in { opacity: 1; transform: translateY(0); }
 
-  /* ─────────── tweaks panel ─────────── */
-  .tweaks {
-    position: fixed;
-    right: 1.25rem; bottom: 1.25rem;
-    z-index: 200;
-    width: 280px;
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    box-shadow: 0 20px 60px -20px rgba(0,0,0,.25);
-    font-family: var(--ff-mono);
-    font-size: 11px;
-    color: var(--ink);
-    display: none;
-  }
-  .tweaks.on { display: block; }
-  .tweaks header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: .7rem .9rem;
-    border-bottom: 1px solid var(--hair);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-size: 10.5px;
-    color: var(--ink-2);
-    cursor: pointer;
-    user-select: none;
-  }
-  .tweaks .body { padding: .75rem .9rem 1rem; display: grid; gap: .85rem; }
-  .tweak-row label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: .35rem;
-  }
-  .chips { display: flex; flex-wrap: wrap; gap: .3rem; }
-  .chip {
-    padding: .38rem .55rem;
-    border: 1px solid var(--hair);
-    background: var(--paper);
-    color: var(--ink-2);
-    font: inherit;
-    cursor: pointer;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-size: 10px;
-    transition: all .15s ease;
-  }
-  .chip:hover { border-color: var(--ink-2); color: var(--ink); }
-  .chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-  input[type="range"].slider {
-    width: 100%; appearance: none; background: transparent;
-  }
-  input[type="range"].slider::-webkit-slider-runnable-track {
-    height: 2px; background: var(--hair);
-  }
-  input[type="range"].slider::-webkit-slider-thumb {
-    appearance: none; width: 12px; height: 12px; margin-top: -5px;
-    border-radius: 50%; background: var(--accent); border: 2px solid var(--paper);
-  }
-
-  /* tweaks toggle button */
-  .tweaks-toggle {
-    position: fixed;
-    right: 1.25rem; bottom: 1.25rem;
-    z-index: 199;
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    color: var(--muted);
-    font-family: var(--ff-mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: .55rem .8rem;
-    cursor: pointer;
-    transition: color .2s ease;
-    box-shadow: 0 4px 20px -8px rgba(0,0,0,.3);
-  }
-  .tweaks-toggle:hover { color: var(--ink); }
-  .tweaks.on + .tweaks-toggle,
-  .tweaks.on ~ .tweaks-toggle { display: none; }
 
   /* ─────────── responsive ─────────── */
   @media (max-width: 900px) {
@@ -827,19 +736,6 @@
     }
     .foot-row .c, .foot-row .r { text-align: left; }
 
-    /* tweaks panel */
-    .tweaks {
-      right: 0.75rem;
-      bottom: 0.75rem;
-      width: calc(100vw - 1.5rem);
-      max-width: 300px;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-    .tweaks-toggle {
-      right: 0.75rem;
-      bottom: 0.75rem;
-    }
   }
 
   @media (max-width: 480px) {
@@ -1212,100 +1108,8 @@
   </div>
 </footer>
 
-<!-- ─────────── TWEAKS PANEL ─────────── -->
-<!-- <aside class="tweaks" id="tweaks" aria-hidden="true">
-  <header id="tweaksHeader">
-    <span>Tweaks</span>
-    <span style="color:var(--muted); letter-spacing:.14em;">✕ close</span>
-  </header>
-  <div class="body">
-    <div class="tweak-row">
-      <label>Hero animation</label>
-      <div class="chips" data-key="hero">
-        <button class="chip" data-value="field">Vector field</button>
-        <button class="chip" data-value="particles">Particles</button>
-        <button class="chip" data-value="waves">Wave interference</button>
-        <button class="chip on" data-value="graph">Neural graph</button>
-        <button class="chip" data-value="phase">Phase portrait</button>
-      </div>
-    </div>
-    <div class="tweak-row">
-      <label>Theme</label>
-      <div class="chips" data-key="theme">
-        <button class="chip" data-value="paper">Paper</button>
-        <button class="chip" data-value="bone">Bone</button>
-        <button class="chip on" data-value="ink">Ink</button>
-      </div>
-    </div>
-    <div class="tweak-row">
-      <label>Accent hue <span id="accentVal">228</span></label>
-      <input type="range" class="slider" id="accentSlider" min="0" max="360" step="1">
-    </div>
-    <div class="tweak-row">
-      <label>Serif</label>
-      <div class="chips" data-key="serif">
-        <button class="chip on" data-value="young">Young</button>
-        <button class="chip" data-value="cormorant">Cormorant</button>
-      </div>
-    </div>
-    <div class="tweak-row">
-      <label>Density</label>
-      <div class="chips" data-key="density">
-        <button class="chip on" data-value="compact">Compact</button>
-        <button class="chip" data-value="regular">Regular</button>
-        <button class="chip" data-value="spacious">Spacious</button>
-      </div>
-    </div>
-    <div class="tweak-row">
-      <label>Section numbering</label>
-      <div class="chips" data-key="sectionNumbering">
-        <button class="chip on" data-value="binary">Binary</button>
-        <button class="chip" data-value="decimal">Decimal</button>
-        <button class="chip" data-value="roman">Roman</button>
-      </div>
-    </div>
-  </div>
-</aside>
-<button class="tweaks-toggle" id="tweaksToggle" aria-label="Open tweaks panel">Tweaks ↑</button> -->
-
 <script>
-  /* ─────────── state ─────────── */
-  const state = { ...TWEAK_DEFAULTS };
   const html = document.documentElement;
-
-  function applyState() {
-    html.setAttribute('data-theme', state.theme);
-    html.setAttribute('data-serif', state.serif);
-    html.setAttribute('data-density', state.density);
-    html.style.setProperty('--accent-h', state.accent);
-    // section numbering
-    document.querySelectorAll('.block-index .num').forEach(el => {
-      const n = parseInt(el.dataset.num, 10);
-      el.textContent = formatNum(n, state.sectionNumbering);
-    });
-    // chip active states
-    document.querySelectorAll('.chips').forEach(group => {
-      const k = group.dataset.key;
-      group.querySelectorAll('.chip').forEach(c => {
-        c.classList.toggle('on', c.dataset.value === state[k]);
-      });
-    });
-    const accentVal = document.getElementById('accentVal');
-    if (accentVal) accentVal.textContent = state.accent;
-    const slider = document.getElementById('accentSlider');
-    if (slider && slider.value != state.accent) slider.value = state.accent;
-    // hero animation
-    if (currentHero !== state.hero) {
-      mountHero(state.hero);
-      currentHero = state.hero;
-    }
-  }
-
-  function formatNum(n, style) {
-    if (style === 'decimal') return String(n + 1).padStart(3, '0');
-    if (style === 'roman')   return ['I','II','III','IV','V','VI','VII','VIII','IX','X'][n] || (n+1);
-    return (n + 1).toString(2).padStart(3, '0');
-  }
 
   /* ─────────── reveal on scroll ─────────── */
   const io = new IntersectionObserver((entries) => {
@@ -1318,54 +1122,7 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  /* ─────────── tweaks UI ─────────── */
-  document.querySelectorAll('.chips').forEach(group => {
-    const k = group.dataset.key;
-    group.addEventListener('click', (e) => {
-      const chip = e.target.closest('.chip');
-      if (!chip) return;
-      state[k] = chip.dataset.value;
-      applyState();
-    });
-  });
-  const slider = document.getElementById('accentSlider');
-  if (slider) {
-    slider.value = state.accent;
-    slider.addEventListener('input', () => {
-      state.accent = +slider.value;
-      html.style.setProperty('--accent-h', state.accent);
-      document.getElementById('accentVal').textContent = state.accent;
-    });
-  }
-
-  // tweaks open/close
-  const tweaksEl = document.getElementById('tweaks');
-  const tweaksToggle = document.getElementById('tweaksToggle');
-  const tweaksHeader = document.getElementById('tweaksHeader');
-  if (tweaksToggle) tweaksToggle.addEventListener('click', () => {
-    tweaksEl.classList.add('on');
-    tweaksToggle.style.display = 'none';
-  });
-  if (tweaksHeader) tweaksHeader.addEventListener('click', () => {
-    tweaksEl.classList.remove('on');
-    tweaksToggle.style.display = '';
-  });
-
-  /* ─────────── HERO animations ─────────── */
-  let currentHero = null;
-  let raf = 0;
-
-  function mountHero(kind) {
-    const host = document.getElementById('heroCanvas');
-    host.innerHTML = '';
-    cancelAnimationFrame(raf);
-    if (kind === 'field') renderVectorField(host);
-    else if (kind === 'particles') renderParticles(host);
-    else if (kind === 'waves') renderWaves(host);
-    else if (kind === 'graph') renderGraph(host);
-    else if (kind === 'phase') renderPhase(host);
-  }
-
+  /* ─────────── canvas helpers ─────────── */
   function setupCanvas(host) {
     const cvs = document.createElement('canvas');
     host.appendChild(cvs);
@@ -1395,119 +1152,7 @@
     };
   }
 
-  /* 1. Vector field */
-  function renderVectorField(host) {
-    const { cvs, ctx } = setupCanvas(host);
-    const step = 34; let t = 0;
-    function frame() {
-      const w = cvs.clientWidth, h = cvs.clientHeight;
-      ctx.clearRect(0, 0, w, h);
-      const c = readInkAccent();
-      ctx.strokeStyle = c.hair;
-      ctx.lineWidth = 1;
-      const cx = w * 0.72, cy = h * 0.55;
-      for (let x = 0; x < w + step; x += step) {
-        for (let y = 0; y < h + step; y += step) {
-          const dx = x - cx, dy = y - cy;
-          const r = Math.hypot(dx, dy) / 240;
-          const ang = Math.atan2(dy, dx) + Math.PI/2 + Math.sin(t*0.0005 + r)*0.8;
-          const len = Math.min(step * 0.55, 4 + r * 6);
-          const vx = Math.cos(ang) * len, vy = Math.sin(ang) * len;
-          const alpha = Math.max(0.08, 0.55 - r * 0.08);
-          ctx.globalAlpha = alpha;
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-          ctx.lineTo(x + vx, y + vy);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(x + vx, y + vy, 1.2, 0, Math.PI * 2);
-          ctx.fillStyle = c.accent;
-          ctx.globalAlpha = alpha * 0.7;
-          ctx.fill();
-        }
-      }
-      ctx.globalAlpha = 1;
-      t += 16;
-      raf = requestAnimationFrame(frame);
-    }
-    frame();
-  }
-
-  /* 2. Particles */
-  function renderParticles(host) {
-    const { cvs, ctx } = setupCanvas(host);
-    const particles = [];
-    const N = 140;
-    for (let i = 0; i < N; i++) {
-      particles.push({ x: Math.random(), y: Math.random(), l: Math.random() * 200 + 60 });
-    }
-    let t = 0;
-    function frame() {
-      const w = cvs.clientWidth, h = cvs.clientHeight;
-      const c = readInkAccent();
-      ctx.globalAlpha = 0.06;
-      ctx.fillStyle = getComputedStyle(html).getPropertyValue('--paper').trim();
-      ctx.fillRect(0, 0, w, h);
-      ctx.globalAlpha = 1;
-      ctx.lineWidth = 0.8;
-      for (const p of particles) {
-        const x = p.x * w, y = p.y * h;
-        const a = Math.sin((p.x * 4 + t * 0.0004)) + Math.cos((p.y * 4 + t * 0.0005));
-        const ang = a * Math.PI;
-        const nx = p.x + Math.cos(ang) * 0.0015;
-        const ny = p.y + Math.sin(ang) * 0.0015;
-        const x2 = nx * w, y2 = ny * h;
-        ctx.globalAlpha = 0.35;
-        ctx.strokeStyle = (p.l % 7 === 0) ? c.accent : c.muted;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-        p.x = nx; p.y = ny; p.l -= 1;
-        if (p.x < 0 || p.x > 1 || p.y < 0 || p.y > 1 || p.l <= 0) {
-          p.x = Math.random(); p.y = Math.random(); p.l = Math.random() * 200 + 60;
-        }
-      }
-      ctx.globalAlpha = 1;
-      t += 16;
-      raf = requestAnimationFrame(frame);
-    }
-    frame();
-  }
-
-  /* 3. Waves */
-  function renderWaves(host) {
-    const { cvs, ctx } = setupCanvas(host);
-    let t = 0;
-    function frame() {
-      const w = cvs.clientWidth, h = cvs.clientHeight;
-      ctx.clearRect(0, 0, w, h);
-      const c = readInkAccent();
-      const s1 = { x: w * 0.25, y: h * 0.45 };
-      const s2 = { x: w * 0.78, y: h * 0.6 };
-      const step = 18;
-      for (let x = 0; x < w; x += step) {
-        for (let y = 0; y < h; y += step) {
-          const d1 = Math.hypot(x - s1.x, y - s1.y);
-          const d2 = Math.hypot(x - s2.x, y - s2.y);
-          const v = Math.sin((d1 - t) * 0.03) + Math.sin((d2 - t) * 0.03);
-          const r = Math.max(0.4, Math.abs(v) * 1.6);
-          const hot = v > 1.2;
-          ctx.globalAlpha = Math.min(0.5, Math.abs(v) * 0.25 + 0.08);
-          ctx.fillStyle = hot ? c.accent : c.muted;
-          ctx.beginPath();
-          ctx.arc(x, y, r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-      ctx.globalAlpha = 1;
-      t += 2;
-      raf = requestAnimationFrame(frame);
-    }
-    frame();
-  }
-
-  /* 4. Neural graph */
+  /* ─────────── Neural graph ─────────── */
   function renderGraph(host) {
     const { cvs, ctx } = setupCanvas(host);
     let t = 0;
@@ -1564,52 +1209,8 @@
     frame();
   }
 
-  /* 5. Phase portrait — Lorenz */
-  function renderPhase(host) {
-    const { cvs, ctx } = setupCanvas(host);
-    const trails = [];
-    for (let i = 0; i < 3; i++) {
-      trails.push({ x: 0.1 + i * 0.02, y: 0, z: 20 + i, pts: [] });
-    }
-    function frame() {
-      const w = cvs.clientWidth, h = cvs.clientHeight;
-      const c = readInkAccent();
-      ctx.globalAlpha = 0.07;
-      ctx.fillStyle = getComputedStyle(html).getPropertyValue('--paper').trim();
-      ctx.fillRect(0, 0, w, h);
-      ctx.globalAlpha = 1;
-      const scale = Math.min(w, h) / 90;
-      const cx = w * 0.68, cy = h * 0.5;
-      const sigma = 10, rho = 28, beta = 8/3, dt = 0.008;
-      trails.forEach((tr, idx) => {
-        for (let k = 0; k < 6; k++) {
-          const dx = sigma * (tr.y - tr.x);
-          const dy = tr.x * (rho - tr.z) - tr.y;
-          const dz = tr.x * tr.y - beta * tr.z;
-          tr.x += dx * dt; tr.y += dy * dt; tr.z += dz * dt;
-          tr.pts.push({ x: cx + tr.x * scale, y: cy + (tr.z - 25) * scale });
-          if (tr.pts.length > 400) tr.pts.shift();
-        }
-        ctx.strokeStyle = idx === 0 ? c.accent : c.muted;
-        ctx.lineWidth = idx === 0 ? 1.2 : 0.7;
-        ctx.globalAlpha = 0.6;
-        ctx.beginPath();
-        tr.pts.forEach((p, i) => {
-          if (i === 0) ctx.moveTo(p.x, p.y);
-          else ctx.lineTo(p.x, p.y);
-        });
-        ctx.stroke();
-      });
-      ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(frame);
-    }
-    frame();
-  }
-
   /* ─────────── init ─────────── */
-  applyState();
-  mountHero(state.hero);
-  currentHero = state.hero;
+  renderGraph(document.getElementById('heroCanvas'));
 </script>
 
 </body>
